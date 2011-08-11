@@ -11,6 +11,7 @@ License:	GPLv2
 Group:		Graphical desktop/Other
 Url:		http://superswitcher.googlecode.com/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
+BuildRequires:	perl-XML-Parser
 BuildRequires:	libwnck-devel
 BuildRequires:	gtk+2-devel
 
@@ -24,6 +25,10 @@ that is currently provided by Metacity.
 
 %build
 %configure2_5x
+# GDK_DISPLAY deprecated
+pushd src
+for f in *; do sed -i 's/gdk_display/GDK_DISPLAY_XDISPLAY (gdk_display_get_default ())/g' "$f" ; done
+popd
 %make
 
 %install
